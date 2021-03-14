@@ -1,5 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Hotel, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should have_many(:reservations) }
+
+  it { should validate_presence_of(:name) }
+  it { should validate_presence_of(:city) }
+  
+  it { should validate_numericality_of(:number_of_rooms).only_integer }
+  it { should validate_numericality_of(:price_per_room) }
 end
