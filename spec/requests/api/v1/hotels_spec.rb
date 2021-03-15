@@ -36,7 +36,7 @@ RSpec.describe Api::V1::HotelsController, type: :request do
 
   describe "POST /api/v1/make_reservation" do
     let(:url) { "/api/v1/make_reservation" }
-    let!(:hotel) { create(:hotel) }
+    let!(:hotel) { create(:hotel, number_of_rooms: 5) }
 
     context "with invalid params" do
       before { post url }
@@ -48,7 +48,12 @@ RSpec.describe Api::V1::HotelsController, type: :request do
 
     context "with valid reservation params" do
       let(:user_attributes) { attributes_for(:user) }
-      let(:reservation_attributes) { attributes_for(:reservation, hotel_id: hotel.id) }
+      let(:arrival) { Date.today + 2.days }
+      let(:departure) { Date.today + 3.days }
+      let(:number_of_rooms) { 4 }
+      let(:reservation_attributes) {
+        attributes_for(:reservation, hotel_id: hotel.id, arrival_date: arrival, departure_date: departure)
+      }
 
       before { post url, params: { user: user_attributes, reservation: reservation_attributes } }
 
@@ -58,7 +63,11 @@ RSpec.describe Api::V1::HotelsController, type: :request do
 
       it "returns reservation" do
         expect(json["id"]).not_to be_nil
-        expect(json["arrival_date"]).to eql((Date.today + 2.days).to_s)
+        expect(json["arrival_date"]).to eql(arrival.to_s)
+      end
+
+      it "updates rooms availability" do
+        
       end
     end
   end
