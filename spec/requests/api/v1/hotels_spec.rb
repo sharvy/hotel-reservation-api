@@ -47,23 +47,8 @@ RSpec.describe Api::V1::HotelsController, type: :request do
     end
 
     context "with valid reservation params" do
-      let(:user_attributes) {
-        {
-          first_name: "First",
-          last_name: "Last",
-          email: "sharvy2008@gmail.com",
-          phone: "01670288718",
-        }
-      }
-
-      let(:reservation_attributes) {
-        {
-          hotel_id: hotel.id,
-          arrival_date: Date.today + 2.days,
-          departure_date: Date.today + 3.days,
-          number_of_rooms: 5
-        }
-      }
+      let(:user_attributes) { attributes_for(:user) }
+      let(:reservation_attributes) { attributes_for(:reservation, hotel_id: hotel.id) }
 
       before { post url, params: { user: user_attributes, reservation: reservation_attributes } }
 

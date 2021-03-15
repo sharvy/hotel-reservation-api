@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :reservation do
     user { nil }
     hotel { nil }
-    arrival_date { "2021-03-14" }
-    departure_date { "2021-03-14" }
-    number_of_rooms { 1 }
+    arrival_date { Date.today + 2.days }
+    departure_date { Date.today + 3.days }
+    number_of_rooms { 5 }
   end
 end
