@@ -1,30 +1,35 @@
 require "rails_helper"
 
-module Api
-  module V1
-    RSpec.describe "Hotels", type: :request do
-      describe "GET /api/v1/search" do
-        let!(:hotels) { create_list(:hotel, 10) }
+RSpec.describe Api::V1::HotelsController, type: :request do
+  describe "GET /api/v1/search" do
+    let(:url) { "/api/v1/search" }
+    let(:city_1) { "City1" }
+    let(:city_2) { "City2" }
+    let(:arrival_date) { Date.today + 2.days }
+    let(:departure_date) { Date.today + 3.days }
+    let(:number_of_rooms) { 5 }
 
-        context "without params" do
-          before { get "/api/v1/search" }
+    context "without params" do
+      let!(:hotel) { create(:hotel) }
+      before { get url }
 
-          it "returns all hotels when no params given" do
-            expect(json.length).to eql(10)
-          end
+      it "returns zero hotels when no params given" do
+        expect(json.length).to eql(0)
+      end
 
-          it "returns http success" do
-            expect(response).to have_http_status(:success)
-          end
-        end
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+    end
 
-        # context "with params" do
-        #   it "returns empty array when no hotels found" do
-        #     get "/api/v1/search?city=Dhaka123"
+    context "with params" do
+      let!(:hotel_1) { create(:hotel, city: city_1) }
+      let!(:hotel_2) { create(:hotel, city: city_2) }
 
-        #     expect(json).to be_empty
-        #   end
-        # end
+      it "returns hotels when arrival_date, departure_date, city, and number_of_rooms given" do
+        get "#{url}?city=#{city_1}&arrival_date=#{arrival_date}&departure_date=#{departure_date}&number_of_rooms=#{number_of_rooms}"
+
+        expect(json.length).to eql(1)
       end
     end
   end
