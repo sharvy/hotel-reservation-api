@@ -33,4 +33,48 @@ RSpec.describe Api::V1::HotelsController, type: :request do
       end
     end
   end
+
+  describe "POST /api/v1/make_reservation" do
+    let(:url) { "/api/v1/make_reservation" }
+    let!(:hotel) { create(:hotel) }
+
+    context "with invalid params" do
+      before { post url }
+
+      it "returns http status unprocessable entity 422" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "with valid reservation params" do
+      let(:user_attributes) {
+        {
+          first_name: "First",
+          last_name: "Last",
+          email: "sharvy2008@gmail.com",
+          phone: "01670288718",
+        }
+      }
+
+      let(:reservation_attributes) {
+        {
+          hotel_id: hotel.id,
+          arrival_date: Date.today + 2.days,
+          departure_date: Date.today + 3.days,
+          number_of_rooms: 5
+        }
+      }
+
+      before { post url, params: { user: user_attributes, reservation: reservation_attributes } }
+
+      it "returns http status created" do
+        expect(response).to have_http_status(:created)
+      end
+
+      it "returns reservation" do
+        expect(json["id"]).not_to be_nil
+        expect(json["arrival_date"]).to eql((Date.today + 2.days).to_s)
+      end
+    end
+  end
 end
