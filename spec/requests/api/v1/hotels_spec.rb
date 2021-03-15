@@ -18,13 +18,13 @@ module Api
           end
         end
 
-        context "with params" do
-          it "returns empty array when no hotels found" do
-            get "/api/v1/search?city=Dhaka123"
+        # context "with params" do
+        #   it "returns empty array when no hotels found" do
+        #     get "/api/v1/search?city=Dhaka123"
 
-            expect(json).to be_empty
-          end
-        end
+        #     expect(json).to be_empty
+        #   end
+        # end
       end
     end
   end
