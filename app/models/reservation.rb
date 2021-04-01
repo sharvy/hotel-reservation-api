@@ -4,4 +4,6 @@ class Reservation < ApplicationRecord
 
   validates :arrival_date, :departure_date, presence: true
   validates :number_of_rooms, numericality: { only_integer: true, greater_than: 0 }
+
+  delegate :number_of_rooms, to: :hotel, prefix: true
 end

@@ -11,7 +11,7 @@ module Search
     def find
       if @city && @arrival_date && @departure_date && @number_of_rooms
         dates = (@arrival_date.to_date..@departure_date.to_date).to_a
-        
+
         Hotel
           .joins(:room_availabilities)
           .where("lower(city) = ?", @city.downcase)
