@@ -65,10 +65,6 @@ RSpec.describe Api::V1::HotelsController, type: :request do
         expect(json["id"]).not_to be_nil
         expect(json["arrival_date"]).to eql(arrival.to_s)
       end
-
-      it "updates rooms availability" do
-        
-      end
     end
   end
 end

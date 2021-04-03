@@ -5,7 +5,7 @@ class UpdateRoomAvailability
     @update_type = params[:type]
   end
 
-  def execute
+  def execute!
     update_rooms
   end
 
@@ -14,7 +14,7 @@ class UpdateRoomAvailability
   def update_rooms
     RoomAvailability.where(hotel: @reservation.hotel, date: dates).find_each do |record|
       new_available_rooms = get_new_rooms_count(record.available_rooms)
-      
+
       if valid_rooms_count?(new_available_rooms)
         record.update(available_rooms: new_available_rooms)
       end
